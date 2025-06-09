@@ -1,0 +1,47 @@
+"Create a professional, modern, and mobile-responsive website for a residential handyman and home renovation business. The primary target audience is homeowners in the Pittsburgh area.
+
+Website Name (for branding): [Your Chosen Domain Name, e.g., https://www.google.com/search?q=PittsburghKitchenAndBath.com]
+
+Services Offered:
+
+    Kitchen and Bathroom Remodeling (major focus)
+    General Handyman Services (minor repairs, installations, odd jobs)
+    Interior and Exterior Painting
+    Flooring Installation (various types)
+    Residential Electrical Services (minor repairs, fixture installation)
+    Residential Plumbing Services (leak repair, fixture installation, drain clearing)
+    Optional: Light Yard Work/Outdoor Cleanup (e.g., pressure washing, gutter cleaning)
+
+Key Pages Required:
+
+    Home Page: Engaging hero section with clear CTA, service highlights, testimonials, 'Why Choose Us' section.
+    Services Page(s): Detailed descriptions for each core service category, with visual examples where possible.
+    About Us Page: Company story, mission, values, team.
+    Gallery/Portfolio Page: High-quality before & after photos, categorized by service.
+    Contact Us Page: Phone, email, business hours, contact form.
+    Request a Quote/Estimate Form: Comprehensive lead capture form.
+
+Design Preferences:
+
+    Clean, professional, and trustworthy aesthetic.
+    Easy navigation.
+    Prominent calls to action.
+    Optimized for fast loading and mobile devices.
+    Consider a color palette that evokes professionalism and reliability (e.g., blues, grays, greens, with a touch of accent color).
+
+Technical Requirements:
+
+    Frontend: HTML, CSS, JavaScript.
+    Backend (for Contact/Quote Forms & Future CRM): Suggest a Python/Flask or Node.js/Express backend to handle form submissions and interact with a placeholder database (e.g., SQLite for initial development, with a note for future migration to PostgreSQL/MySQL for scalability).
+    Database (for customer info): Implement a basic schema for storing lead/customer contact information and project details submitted via forms. Ensure this is ready for future integration (API endpoints for data access).
+
+SEO & Marketing Considerations:
+
+    Implement basic on-page SEO best practices (clean URLs, semantic HTML, meta tags for titles/descriptions, alt tags for images).
+    Ensure site structure supports future content expansion for blog posts (e.g., "Pittsburgh Kitchen Remodeling Tips").
+
+Deliverables:
+
+    Clean, commented code for all pages and backend logic.
+    Instructions on how to deploy and run the application.
+    A plan for database setup and management.
