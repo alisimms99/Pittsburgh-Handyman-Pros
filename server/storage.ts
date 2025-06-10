@@ -64,8 +64,13 @@ export class MemStorage implements IStorage {
   async createContact(insertContact: InsertContact): Promise<Contact> {
     const id = this.currentContactId++;
     const contact: Contact = { 
-      ...insertContact, 
-      id, 
+      id,
+      firstName: insertContact.firstName,
+      lastName: insertContact.lastName,
+      email: insertContact.email,
+      phone: insertContact.phone || null,
+      service: insertContact.service || null,
+      message: insertContact.message,
       createdAt: new Date() 
     };
     this.contacts.set(id, contact);
@@ -82,8 +87,21 @@ export class MemStorage implements IStorage {
   async createQuoteRequest(insertQuoteRequest: InsertQuoteRequest): Promise<QuoteRequest> {
     const id = this.currentQuoteRequestId++;
     const quoteRequest: QuoteRequest = { 
-      ...insertQuoteRequest, 
-      id, 
+      id,
+      firstName: insertQuoteRequest.firstName,
+      lastName: insertQuoteRequest.lastName,
+      email: insertQuoteRequest.email,
+      phone: insertQuoteRequest.phone,
+      address: insertQuoteRequest.address,
+      city: insertQuoteRequest.city,
+      state: insertQuoteRequest.state,
+      zipCode: insertQuoteRequest.zipCode,
+      primaryService: insertQuoteRequest.primaryService,
+      timeline: insertQuoteRequest.timeline || null,
+      budget: insertQuoteRequest.budget || null,
+      description: insertQuoteRequest.description,
+      contactMethod: insertQuoteRequest.contactMethod,
+      consent: insertQuoteRequest.consent,
       createdAt: new Date() 
     };
     this.quoteRequests.set(id, quoteRequest);
