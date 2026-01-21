@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -15,13 +16,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { services } from "@/data/services";
+import { serviceAreas, alsoServingAreas } from "@/data/serviceAreas";
+import SEO from "@/components/SEO";
+import SchemaMarkup from "@/components/SchemaMarkup";
 
 const contactFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
   phone: z.string().optional(),
+  zipCode: z.string().min(5, "ZIP code is required").max(10),
   service: z.string().optional(),
+  projectType: z.enum(["single", "multiple", "ongoing"]).optional(),
   message: z.string().min(1, "Message is required"),
 });
 
@@ -38,7 +45,9 @@ export default function Contact() {
       lastName: "",
       email: "",
       phone: "",
+      zipCode: "",
       service: "",
+      projectType: undefined,
       message: "",
     },
   });
@@ -71,14 +80,21 @@ export default function Contact() {
 
   return (
     <div className="pt-16">
+      <SEO 
+        title="Contact Us | Pittsburgh Handyman Pros"
+        description="Contact Pittsburgh Handyman Pros for a free quote. Serving Upper St. Clair, Fox Chapel, Sewickley, Ross Township, Aspinwall, and surrounding areas."
+        keywords="contact handyman Pittsburgh, free quote, handyman services"
+      />
+      <SchemaMarkup type="local-business" />
+
       {/* Header Section */}
-      <section className="bg-steelers-black text-white py-20">
+      <section className="hero-gradient text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Get In <span className="text-steelers-gold">Touch</span>
+            Get Your <span className="text-steelers-gold">Free Quote</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Ready to start your home improvement project? Contact us today for a free consultation and estimate.
+            Ready to check off your home repair to-do list? Contact us today for a free, no-obligation quote.
           </p>
         </div>
       </section>
@@ -98,8 +114,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="font-semibold text-steelers-black">Phone</div>
-                    <a href="tel:412-555-0123" className="text-steelers-gold hover:text-dark-gold transition-colors duration-300">
-                      (412) 555-0123
+                    <a href="tel:[PHONE_NUMBER_PLACEHOLDER]" className="text-steelers-gold hover:text-dark-gold transition-colors duration-300">
+                      [PHONE_NUMBER_PLACEHOLDER]
                     </a>
                   </div>
                 </div>
@@ -135,20 +151,32 @@ export default function Contact() {
                     <div className="text-gray-600">
                       Mon-Fri: 7:00 AM - 6:00 PM<br/>
                       Sat: 8:00 AM - 4:00 PM<br/>
-                      Sun: Emergency Only
+                      Sun: Closed
                     </div>
                   </div>
                 </div>
               </div>
               
               <div className="bg-gray-100 p-6 rounded-xl">
-                <h4 className="text-xl font-bold mb-4 text-steelers-gold">Emergency Services</h4>
-                <p className="text-gray-600 mb-4">
-                  We provide emergency repair services for urgent issues like plumbing leaks, electrical problems, and security concerns.
-                </p>
-                <a href="tel:412-555-0123" className="text-steelers-gold font-semibold hover:text-dark-gold transition-colors duration-300">
-                  Call (412) 555-0123 for Emergencies
-                </a>
+                <h4 className="text-xl font-bold mb-4 text-steelers-gold">Why Choose Us?</h4>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <i className="fas fa-check text-steelers-gold mt-1 mr-3"></i>
+                    <span className="text-gray-700">We show up when we say we will</span>
+                  </li>
+                  <li className="flex items-start">
+                    <i className="fas fa-check text-steelers-gold mt-1 mr-3"></i>
+                    <span className="text-gray-700">Transparent pricing, no hidden fees</span>
+                  </li>
+                  <li className="flex items-start">
+                    <i className="fas fa-check text-steelers-gold mt-1 mr-3"></i>
+                    <span className="text-gray-700">Licensed, insured, background-checked</span>
+                  </li>
+                  <li className="flex items-start">
+                    <i className="fas fa-check text-steelers-gold mt-1 mr-3"></i>
+                    <span className="text-gray-700">One call handles it all</span>
+                  </li>
+                </ul>
               </div>
             </div>
             
@@ -201,14 +229,32 @@ export default function Contact() {
                   )}
                 </div>
                 
-                <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    {...form.register("phone")}
-                    className="form-input"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="phone">Phone</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      {...form.register("phone")}
+                      className="form-input"
+                      placeholder="(412) 555-1234"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="zipCode">ZIP Code *</Label>
+                    <Input
+                      id="zipCode"
+                      {...form.register("zipCode")}
+                      className="form-input"
+                      placeholder="15241"
+                      maxLength={10}
+                    />
+                    {form.formState.errors.zipCode && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {form.formState.errors.zipCode.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 
                 <div>
@@ -218,16 +264,35 @@ export default function Contact() {
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="kitchen">Kitchen Remodeling</SelectItem>
-                      <SelectItem value="bathroom">Bathroom Renovation</SelectItem>
-                      <SelectItem value="handyman">General Handyman</SelectItem>
-                      <SelectItem value="painting">Painting</SelectItem>
-                      <SelectItem value="flooring">Flooring</SelectItem>
-                      <SelectItem value="electrical">Electrical</SelectItem>
-                      <SelectItem value="plumbing">Plumbing</SelectItem>
+                      {services.map((service) => (
+                        <SelectItem key={service.slug} value={service.slug}>
+                          {service.title}
+                        </SelectItem>
+                      ))}
                       <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div>
+                  <Label>Project Type</Label>
+                  <RadioGroup 
+                    onValueChange={(value) => form.setValue("projectType", value as "single" | "multiple" | "ongoing")}
+                    className="flex flex-col space-y-2 mt-2"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="single" id="single" />
+                      <Label htmlFor="single" className="font-normal cursor-pointer">Single repair</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="multiple" id="multiple" />
+                      <Label htmlFor="multiple" className="font-normal cursor-pointer">Multiple repairs</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="ongoing" id="ongoing" />
+                      <Label htmlFor="ongoing" className="font-normal cursor-pointer">Ongoing maintenance needs</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
                 
                 <div>
@@ -259,57 +324,50 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Map Section */}
+      {/* Service Areas Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-steelers-black mb-4">Service Areas</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We proudly serve homeowners throughout the Greater Pittsburgh Area and surrounding communities.
+              We proudly serve homeowners throughout Pittsburgh and surrounding communities.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-steelers-black mb-2">City Neighborhoods</h3>
-              <ul className="text-gray-600 space-y-1">
-                <li>Shadyside</li>
-                <li>Squirrel Hill</li>
-                <li>Mt. Washington</li>
-                <li>Oakland</li>
-                <li>Lawrenceville</li>
-              </ul>
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-steelers-black text-center mb-8">Priority Service Areas</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {serviceAreas.map((area) => (
+                <div 
+                  key={area.slug}
+                  className="bg-white p-6 rounded-lg text-center shadow"
+                >
+                  <i className="fas fa-map-marker-alt text-steelers-gold text-2xl mb-2"></i>
+                  <div className="font-semibold text-steelers-black">{area.name}</div>
+                  <div className="text-sm text-gray-500">{area.zipCode}</div>
+                </div>
+              ))}
             </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-steelers-black mb-2">North Hills</h3>
-              <ul className="text-gray-600 space-y-1">
-                <li>Cranberry</li>
-                <li>Wexford</li>
-                <li>Mars</li>
-                <li>Gibsonia</li>
-                <li>Allison Park</li>
-              </ul>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-bold text-steelers-black text-center mb-8">Also Serving</h3>
+            <div className="flex flex-wrap justify-center gap-4">
+              {alsoServingAreas.map((area, index) => (
+                <div 
+                  key={index}
+                  className="bg-white px-6 py-3 rounded-lg shadow text-steelers-black font-semibold"
+                >
+                  {area}
+                </div>
+              ))}
             </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-steelers-black mb-2">South Hills</h3>
-              <ul className="text-gray-600 space-y-1">
-                <li>Upper St. Clair</li>
-                <li>Peters Township</li>
-                <li>Mt. Lebanon</li>
-                <li>Bethel Park</li>
-                <li>McMurray</li>
-              </ul>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-steelers-black mb-2">East Suburbs</h3>
-              <ul className="text-gray-600 space-y-1">
-                <li>Monroeville</li>
-                <li>Murrysville</li>
-                <li>Penn Hills</li>
-                <li>Plum</li>
-                <li>Export</li>
-              </ul>
-            </div>
+          </div>
+
+          <div className="text-center mt-8">
+            <p className="text-gray-600">
+              Don't see your area listed? Contact us to check if we serve your location.
+            </p>
           </div>
         </div>
       </section>

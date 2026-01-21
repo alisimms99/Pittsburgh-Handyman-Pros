@@ -69,7 +69,9 @@ export class MemStorage implements IStorage {
       lastName: insertContact.lastName,
       email: insertContact.email,
       phone: insertContact.phone || null,
+      zipCode: insertContact.zipCode || null,
       service: insertContact.service || null,
+      projectType: insertContact.projectType || null,
       message: insertContact.message,
       createdAt: new Date() 
     };
